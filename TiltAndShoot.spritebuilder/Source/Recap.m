@@ -16,6 +16,7 @@
     CCNode *_bronzeCover;
     CCNode *_silverCover;
     CCNode *_goldCover;
+    //testing comment
 }
 
 - (void)onEnter {
