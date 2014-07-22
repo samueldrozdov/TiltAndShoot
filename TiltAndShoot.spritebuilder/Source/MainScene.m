@@ -11,13 +11,17 @@
 #import <Foundation/Foundation.h>
 #import <CoreMotion/CoreMotion.h>
 
+#import <math.h>
+
 
 @implementation MainScene {
     CCNode *_instructions;
     CCNode *_ball;
     CCNode *_crosshair;
+    CCNode *_pointer;
     CCLabelTTF *_scoreLabel;
     CCPhysicsNode *_physicsNode;
+    
     
     CMMotionManager *_motionManager;
     CGSize bbSize;
@@ -61,6 +65,7 @@
     
 }
 
+
 // called on every touch in this scene
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     
@@ -68,9 +73,17 @@
     int ballY = _ball.positionInPoints.y;
     int crosshairX = _crosshair.position.x;
     int crosshairY = _crosshair.position.y;
-    float distFromballCenter = powf(crosshairX - ballX, 2) + powf(crosshairY - ballY, 2);
+    float pointerX = _pointer.position.x;
+    float pointerY = _pointer.position.y;
+    float pointerDistToBall = powf(pointerX - ballX, 2) + powf(pointerY - ballY, 2);
+    float crosshairDistToBall = powf(crosshairX - ballX, 2) + powf(crosshairY - ballY, 2);
+    float pointerDistToCrosshair = powf(crosshairX - pointerX, 2) + powf(crosshairY - pointerY, 2);
+    float angleAwayFromBall = M_PI - acosf((powf(pointerDistToBall, 2)+powf(crosshairDistToBall, 2)-powf(pointerDistToCrosshair, 2))/(2*pointerDistToBall*crosshairDistToBall));
+    
+    _pointer.rotationalSkewX = angleAwayFromBall;
+    
     // check if the ball contains the crosshair
-    if(powf(ballRadius, 2) >= distFromballCenter) {
+    if(powf(ballRadius, 2) >= crosshairDistToBall) {
         _instructions.visible = false;
         _scoreLabel.visible = true;
         score++;
@@ -102,6 +115,7 @@
 
 // updates that happen every 1/60th second
 -(void)update:(CCTime)delta {
+    
     CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
     CMAcceleration acceleration = accelerometerData.acceleration;
     CGFloat newXPosition = _crosshair.position.x + (acceleration.x+calibrationX) * 1500 * delta;
