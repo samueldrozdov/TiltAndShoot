@@ -29,10 +29,6 @@
     float ballRadius;
     int score;
     int power;
-    bool start;
-    
-    float calibrationX;
-    float calibrationY;
     
     CCNodeColor *_timerCover;
 }
@@ -60,12 +56,16 @@
     
     _motionManager = [[CMMotionManager alloc] init];
     _scoreLabel.visible = false;
-    calibrationX = 0;
-    calibrationY = 0;
     ballRadius = 35.5;
     score = 0;
     power = 20;
-    start = false;
+    
+    // if restart is clicked the game skips the menu screen
+    if(1 == [[[NSUserDefaults standardUserDefaults] objectForKey:@"Start"] integerValue]) {
+        _instructions.visible = false;
+        _scoreLabel.visible = true;
+        _keepShootingLabel.visible = true;
+    }
 }
 
 // called on every touch in this scene
@@ -80,17 +80,17 @@
         _instructions.visible = false;
         _scoreLabel.visible = true;
         _keepShootingLabel.visible = true;
-        if(score > 5) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1] forKey:@"Start"];
+        // increase the score and update the labels
+        score++;
+        _scoreLabel.string = [NSString stringWithFormat:@"%d", score];
+        if(score >= 5) {
             _keepShootingLabel.visible = false;
             _dontHitWallsLabel.visible = true;
         }
         if(score >= 15) {
             _dontHitWallsLabel.visible = false;
         }
-        start = true;
-        // increase the score and update the label
-        score++;
-        _scoreLabel.string = [NSString stringWithFormat:@"%d", score];
         
         // hitting the ball further from the center applies some more force
         [_ball.physicsBody applyForce:ccp((ballX-crosshairX)*power,(ballY-crosshairY)*power)];
@@ -122,8 +122,8 @@
 -(void)update:(CCTime)delta {
     CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
     CMAcceleration acceleration = accelerometerData.acceleration;
-    CGFloat newXPosition = _crosshair.position.x + (acceleration.x+calibrationX) * 1500 * delta;
-    CGFloat newYPosition = _crosshair.position.y + (acceleration.y+calibrationY) * 1500 * delta;
+    CGFloat newXPosition = _crosshair.position.x + (acceleration.x + [[[NSUserDefaults standardUserDefaults] objectForKey:@"calibrationX"] floatValue]) * 1500 * delta;
+    CGFloat newYPosition = _crosshair.position.y + (acceleration.y + [[[NSUserDefaults standardUserDefaults] objectForKey:@"calibrationY"] floatValue]) * 1500 * delta;
     
     newXPosition = clampf(newXPosition, 0, bbSize.width);
     newYPosition = clampf(newYPosition, 0, bbSize.height);
@@ -150,7 +150,7 @@
     }
     
     // timer only starts after the game starts
-    if(start) {
+    if(1 == [[[NSUserDefaults standardUserDefaults] objectForKey:@"Start"] integerValue]) {
         _timerCover.position = ccp(_timerCover.position.x, _timerCover.position.y - 0.2 );
         if(_timerCover.position.y <= 10){
             [self endGame];
@@ -160,8 +160,10 @@
 
 -(void)calibrate {
     _crosshair.position = ccp(bbSize.width/2, bbSize.height/2);
-    calibrationX = -_motionManager.accelerometerData.acceleration.x;
-    calibrationY = -_motionManager.accelerometerData.acceleration.y;
+    float calibrationX = -_motionManager.accelerometerData.acceleration.x;
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:calibrationX] forKey:@"calibrationX"];
+    float calibrationY = -_motionManager.accelerometerData.acceleration.y;
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:calibrationY] forKey:@"calibrationY"];
     _calibrateButton.visible = false;
     _clickShootLabel.visible = true;
     _arrowLabel.visible = true;

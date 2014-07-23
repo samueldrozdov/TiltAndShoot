@@ -336,7 +336,7 @@
 									<real>0.0039215688593685627</real>
 									<real>0.68627452850341797</real>
 									<real>0.97254908084869385</real>
-									<real>0.5</real>
+									<real>0.69999998807907104</real>
 								</array>
 							</dict>
 							<dict>
@@ -345,7 +345,7 @@
 								<key>type</key>
 								<string>Float</string>
 								<key>value</key>
-								<real>0.5</real>
+								<real>0.69999998807907104</real>
 							</dict>
 						</array>
 					</dict>
@@ -524,7 +524,7 @@
 									<real>0.0039215688593685627</real>
 									<real>0.68627452850341797</real>
 									<real>0.97254908084869385</real>
-									<real>0.5</real>
+									<real>0.69999998807907104</real>
 								</array>
 							</dict>
 							<dict>
@@ -533,7 +533,7 @@
 								<key>type</key>
 								<string>Float</string>
 								<key>value</key>
-								<real>0.5</real>
+								<real>0.69999998807907104</real>
 							</dict>
 						</array>
 					</dict>
@@ -712,7 +712,7 @@
 									<real>0.0039215688593685627</real>
 									<real>0.68627452850341797</real>
 									<real>0.97254908084869385</real>
-									<real>0.5</real>
+									<real>0.69999998807907104</real>
 								</array>
 							</dict>
 							<dict>
@@ -721,7 +721,7 @@
 								<key>type</key>
 								<string>Float</string>
 								<key>value</key>
-								<real>0.5</real>
+								<real>0.69999998807907104</real>
 							</dict>
 						</array>
 					</dict>
@@ -751,7 +751,7 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.51759570837020874</real>
+							<real>0.5</real>
 							<real>0.82316631078720093</real>
 							<integer>0</integer>
 							<integer>2</integer>
@@ -1282,7 +1282,7 @@
 						<string>Block</string>
 						<key>value</key>
 						<array>
-							<string></string>
+							<string>menu</string>
 							<integer>1</integer>
 						</array>
 					</dict>
@@ -1537,6 +1537,8 @@
 						</array>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>

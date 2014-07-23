@@ -16,7 +16,6 @@
     CCNode *_bronzeCover;
     CCNode *_silverCover;
     CCNode *_goldCover;
-    //testing comment
 }
 
 - (void)onEnter {
@@ -43,8 +42,15 @@
 }
 
 -(void)restart {
-    CCScene *recapScene = [CCBReader loadAsScene:@"MainScene"];
-    [[CCDirector sharedDirector] replaceScene:recapScene];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1] forKey:@"Start"];
+    CCScene *mainScene = [CCBReader loadAsScene:@"MainScene"];
+    [[CCDirector sharedDirector] replaceScene:mainScene];
+}
+
+-(void)menu {
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:0] forKey:@"Start"];
+    CCScene *mainScene = [CCBReader loadAsScene:@"MainScene"];
+    [[CCDirector sharedDirector] replaceScene:mainScene];
 }
 
 
