@@ -11,9 +11,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreMotion/CoreMotion.h>
 
-#import <math.h>
-
-
 @implementation MainScene {
     CCNode *_instructions;
     CCNode *_ball;
