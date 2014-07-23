@@ -124,8 +124,8 @@
 						<string>Color3</string>
 						<key>value</key>
 						<array>
-							<real>0.12813207507133484</real>
-							<real>0.65929079055786133</real>
+							<real>0.19914484024047852</real>
+							<real>0.73035651445388794</real>
 							<real>0.98677384853363037</real>
 							<real>1</real>
 						</array>
@@ -139,6 +139,8 @@
 						<real>1</real>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -1317,8 +1319,6 @@ Ball Hit The Walls</string>
 								</array>
 							</dict>
 						</array>
-						<key>selected</key>
-						<true/>
 					</dict>
 					<dict>
 						<key>UUID</key>

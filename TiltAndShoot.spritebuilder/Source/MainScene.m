@@ -147,6 +147,7 @@
     calibrationY = -_motionManager.accelerometerData.acceleration.y;
     _calibrateButton.visible = false;
     _clickShootLabel.visible = true;
+    _arrowLabel.visible = true;
 }
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair ball:(CCNode *)nodeA wall:(CCNode *)nodeB {
