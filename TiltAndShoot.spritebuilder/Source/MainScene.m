@@ -21,19 +21,20 @@
     CCNode *_calibrateButton;
     CCLabelTTF *_arrowLabel;
     CCLabelTTF *_clickShootLabel;
-    CCLabelTTF *_hitWallsLabel;
     CCLabelTTF *_keepShootingLabel;
+    CCLabelTTF *_dontHitWallsLabel;
     
     CMMotionManager *_motionManager;
     CGSize bbSize;
     float ballRadius;
     int score;
     int power;
+    bool start;
     
     float calibrationX;
     float calibrationY;
     
-    CCNodeColor *_background;
+    CCNodeColor *_timerCover;
 }
 
 - (void)onEnter
@@ -64,6 +65,7 @@
     ballRadius = 35.5;
     score = 0;
     power = 20;
+    start = false;
 }
 
 // called on every touch in this scene
@@ -77,12 +79,15 @@
     if(ballRadius >= crosshairDistToBall) {
         _instructions.visible = false;
         _scoreLabel.visible = true;
-        _hitWallsLabel.visible = true;
         _keepShootingLabel.visible = true;
-        if(score > 10) {
-            _hitWallsLabel.visible = false;
+        if(score > 5) {
             _keepShootingLabel.visible = false;
+            _dontHitWallsLabel.visible = true;
         }
+        if(score >= 15) {
+            _dontHitWallsLabel.visible = false;
+        }
+        start = true;
         // increase the score and update the label
         score++;
         _scoreLabel.string = [NSString stringWithFormat:@"%d", score];
@@ -90,6 +95,10 @@
         // hitting the ball further from the center applies some more force
         [_ball.physicsBody applyForce:ccp((ballX-crosshairX)*power,(ballY-crosshairY)*power)];
         power += 5;
+        
+        // add time to timerCover's positon
+        if(_timerCover.position.y < 85)
+            _timerCover.position = ccp(_timerCover.position.x, _timerCover.position.y + 15);
         
         // load particle effect
         CCParticleSystem *hit = (CCParticleSystem *)[CCBReader load:@"HitParticle"];
@@ -138,6 +147,14 @@
     }
     if(score >= 300) {
         _scoreLabel.color = [CCColor magentaColor];
+    }
+    
+    // timer only starts after the game starts
+    if(start) {
+        _timerCover.position = ccp(_timerCover.position.x, _timerCover.position.y - 0.2 );
+        if(_timerCover.position.y <= 10){
+            [self endGame];
+        }
     }
 }
 
